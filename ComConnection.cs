@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -28,7 +28,7 @@ namespace V8Gate {
 		protected virtual void Dispose(bool disposing) {
 			if(!m_disposed){
 				if (disposing){
-					//пусто, нет управляемых компонент
+					//РїСѓСЃС‚Рѕ, РЅРµС‚ СѓРїСЂР°РІР»СЏРµРјС‹С… РєРѕРјРїРѕРЅРµРЅС‚
 				}
 				V8A.ReleaseComObject(this.m_comObject);
 				this.m_comObject = null;

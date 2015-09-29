@@ -98,7 +98,6 @@
     <Compile Include="Settings.cs" />
     <Compile Include="SystemEnum.cs" />
     <Compile Include="TransactionIdStack.cs" />
-    <Compile Include="V8GateExtensions.cs" />
     <Compile Include="V8Object.cs" />
   </ItemGroup>
   <ItemGroup>

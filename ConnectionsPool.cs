@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Runtime.InteropServices;
@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 //using V8Gate;
 
-namespace V8Gate {	 //комментарий 1
+namespace V8Gate {	 //РєРѕРјРјРµРЅС‚Р°СЂРёР№ 1
 
 	//internal class Transaction {
 	//  //public long ID { public get; private set; }
@@ -83,14 +83,14 @@ namespace V8Gate {	 //комментарий 1
 			_connection = _parent.GetObjectFromPool(_transactionID);
 			//_transactionID = transactionID;
 			//_connection = _parent.GetObjectFromPool();
-			////Trace.WriteLine("Начало DbConnection я-" + Thread.CurrentThread.Name);
+			////Trace.WriteLine("РќР°С‡Р°Р»Рѕ DbConnection СЏ-" + Thread.CurrentThread.Name);
 			//V81.COMConnector conr = new V81.COMConnector();
 			////conr.PoolTimeout = 1;
-			////Trace.WriteLine("начало коннекта");
+			////Trace.WriteLine("РЅР°С‡Р°Р»Рѕ РєРѕРЅРЅРµРєС‚Р°");
 			//_connection = new ComObject(conr.Connect(aConnectionString));
-			////Trace.WriteLine("конец коннекта");
+			////Trace.WriteLine("РєРѕРЅРµС† РєРѕРЅРЅРµРєС‚Р°");
 			//Marshal.ReleaseComObject(conr);
-			////Trace.WriteLine("Конец DbConnection я-" + Thread.CurrentThread.Name);
+			////Trace.WriteLine("РљРѕРЅРµС† DbConnection СЏ-" + Thread.CurrentThread.Name);
 		}
 		#endregion
 
@@ -127,34 +127,34 @@ namespace V8Gate {	 //комментарий 1
 		}
 		#endregion
 
-		public object XMLЗначение(object аТип, string СтрокаXML) {
-			//return V8A.Invoke(connection.comObject, "XMLЗначение", BindingFlags.InvokeMethod, new object[] { аТип, СтрокаXML });
-			return V8A.Call(Connection, Connection.comObject, "XMLЗначение()", аТип, СтрокаXML);
+		public object XMLР—РЅР°С‡РµРЅРёРµ(object Р°РўРёРї, string РЎС‚СЂРѕРєР°XML) {
+			//return V8A.Invoke(connection.comObject, "XMLР—РЅР°С‡РµРЅРёРµ", BindingFlags.InvokeMethod, new object[] { Р°РўРёРї, РЎС‚СЂРѕРєР°XML });
+			return V8A.Call(Connection, Connection.comObject, "XMLР—РЅР°С‡РµРЅРёРµ()", Р°РўРёРї, РЎС‚СЂРѕРєР°XML);
 		}
 
-		public string XMLСтрока(object аЗначение) {
-			//return (string)V8A.Invoke(connection.comObject, "XMLСтрока", BindingFlags.InvokeMethod, new object[] { аЗначение });
-			return (string)V8A.Call(Connection, Connection.comObject, "XMLСтрока()", аЗначение);
+		public string XMLРЎС‚СЂРѕРєР°(object Р°Р—РЅР°С‡РµРЅРёРµ) {
+			//return (string)V8A.Invoke(connection.comObject, "XMLРЎС‚СЂРѕРєР°", BindingFlags.InvokeMethod, new object[] { Р°Р—РЅР°С‡РµРЅРёРµ });
+			return (string)V8A.Call(Connection, Connection.comObject, "XMLРЎС‚СЂРѕРєР°()", Р°Р—РЅР°С‡РµРЅРёРµ);
 		}
 
-		public object XMLТип(object аТип) {
-			//return V8A.Invoke(connection.comObject, "XMLТип", BindingFlags.InvokeMethod, new object[] { аТип });
-			return V8A.Call(Connection, Connection.comObject, "XMLТип()", аТип);
+		public object XMLРўРёРї(object Р°РўРёРї) {
+			//return V8A.Invoke(connection.comObject, "XMLРўРёРї", BindingFlags.InvokeMethod, new object[] { Р°РўРёРї });
+			return V8A.Call(Connection, Connection.comObject, "XMLРўРёРї()", Р°РўРёРї);
 		}
 
-		public object XMLТипЗнч(object аЗначение) {
-			//return V8A.Invoke(connection.comObject, "XMLТипЗнч", BindingFlags.InvokeMethod, new object[] { аЗначение });
-			return V8A.Call(Connection, Connection.comObject, "XMLТипЗнч()", аЗначение);
+		public object XMLРўРёРїР—РЅС‡(object Р°Р—РЅР°С‡РµРЅРёРµ) {
+			//return V8A.Invoke(connection.comObject, "XMLРўРёРїР—РЅС‡", BindingFlags.InvokeMethod, new object[] { Р°Р—РЅР°С‡РµРЅРёРµ });
+			return V8A.Call(Connection, Connection.comObject, "XMLРўРёРїР—РЅС‡()", Р°Р—РЅР°С‡РµРЅРёРµ);
 		}
 
-		public object ИзXMLТипа(object аТипXML) {
-			//return V8A.Invoke(connection.comObject, "ИзXMLТипа", BindingFlags.InvokeMethod, new object[] { аТипXML });
-			return V8A.Call(Connection, Connection.comObject, "ИзXMLТипа()", аТипXML);
+		public object РР·XMLРўРёРїР°(object Р°РўРёРїXML) {
+			//return V8A.Invoke(connection.comObject, "РР·XMLРўРёРїР°", BindingFlags.InvokeMethod, new object[] { Р°РўРёРїXML });
+			return V8A.Call(Connection, Connection.comObject, "РР·XMLРўРёРїР°()", Р°РўРёРїXML);
 		}
 
-		public Guid НачатьТранзакцию(TimeSpan timeOut) {
+		public Guid РќР°С‡Р°С‚СЊРўСЂР°РЅР·Р°РєС†РёСЋ(TimeSpan timeOut) {
 			if (_transactionID != Guid.Empty) {
-				throw new InvalidOperationException("Транзакция уже начата. Вложенные транзакции не поддерживаются.");
+				throw new InvalidOperationException("РўСЂР°РЅР·Р°РєС†РёСЏ СѓР¶Рµ РЅР°С‡Р°С‚Р°. Р’Р»РѕР¶РµРЅРЅС‹Рµ С‚СЂР°РЅР·Р°РєС†РёРё РЅРµ РїРѕРґРґРµСЂР¶РёРІР°СЋС‚СЃСЏ.");
 			}
 
 			Connection.TimeOut = timeOut;
@@ -165,20 +165,20 @@ namespace V8Gate {	 //комментарий 1
 			return _transactionID;
 		}
 
-		public void ЗафиксироватьТранзакцию() {
-			//V8A.Invoke(connection.comObject, "ЗафиксироватьТранзакцию", BindingFlags.InvokeMethod, null);
-			V8A.Call(Connection, Connection.comObject, "ЗафиксироватьТранзакцию()");
+		public void Р—Р°С„РёРєСЃРёСЂРѕРІР°С‚СЊРўСЂР°РЅР·Р°РєС†РёСЋ() {
+			//V8A.Invoke(connection.comObject, "Р—Р°С„РёРєСЃРёСЂРѕРІР°С‚СЊРўСЂР°РЅР·Р°РєС†РёСЋ", BindingFlags.InvokeMethod, null);
+			V8A.Call(Connection, Connection.comObject, "Р—Р°С„РёРєСЃРёСЂРѕРІР°С‚СЊРўСЂР°РЅР·Р°РєС†РёСЋ()");
 			_parent.MoveFromTransaction(_transactionID);
 			_transactionID = Guid.Empty;
 		}
 
-		public void ОтменитьТранзакцию() {
-			//V8A.Invoke(connection.comObject, "ОтменитьТранзакцию", BindingFlags.InvokeMethod, null);
-			V8A.Call(Connection, Connection.comObject, "ОтменитьТранзакцию()");
+		public void РћС‚РјРµРЅРёС‚СЊРўСЂР°РЅР·Р°РєС†РёСЋ() {
+			//V8A.Invoke(connection.comObject, "РћС‚РјРµРЅРёС‚СЊРўСЂР°РЅР·Р°РєС†РёСЋ", BindingFlags.InvokeMethod, null);
+			V8A.Call(Connection, Connection.comObject, "РћС‚РјРµРЅРёС‚СЊРўСЂР°РЅР·Р°РєС†РёСЋ()");
 			_parent.MoveFromTransaction(_transactionID);
 			_transactionID = Guid.Empty;
-			//_parent.ReturnObjectToPool(_transaction); //Если _transactionID не указана - будет InvalidOperationException
-			//Тран = "Отменена транзакция";
+			//_parent.ReturnObjectToPool(_transaction); //Р•СЃР»Рё _transactionID РЅРµ СѓРєР°Р·Р°РЅР° - Р±СѓРґРµС‚ InvalidOperationException
+			//РўСЂР°РЅ = "РћС‚РјРµРЅРµРЅР° С‚СЂР°РЅР·Р°РєС†РёСЏ";
 		}
 	}
 	
@@ -233,15 +233,15 @@ namespace V8Gate {	 //комментарий 1
 		private DbConnections() {
 			System.Configuration.ConnectionStringSettings css = System.Configuration.ConfigurationManager.ConnectionStrings["1C_Base"];
 			if (css == null || string.IsNullOrEmpty(css.ConnectionString)) {
-				//достать имя файла
-				throw new Exception("В ConnectionStrings не найдена строка 1C_Base в конфиг файле");
+				//РґРѕСЃС‚Р°С‚СЊ РёРјСЏ С„Р°Р№Р»Р°
+				throw new Exception("Р’ ConnectionStrings РЅРµ РЅР°Р№РґРµРЅР° СЃС‚СЂРѕРєР° 1C_Base РІ РєРѕРЅС„РёРі С„Р°Р№Р»Рµ");
 			}
 			ConnectionString = css.ConnectionString;
 			string strConCount = System.Configuration.ConfigurationManager.AppSettings["1C_ConCount"];
-			int cc; //= 1; нет смысла, TryParse  изменяет значение в любом случае
+			int cc; //= 1; РЅРµС‚ СЃРјС‹СЃР»Р°, TryParse  РёР·РјРµРЅСЏРµС‚ Р·РЅР°С‡РµРЅРёРµ РІ Р»СЋР±РѕРј СЃР»СѓС‡Р°Рµ
 			ConnectionsCount = int.TryParse(strConCount, out cc) ? cc : 0;
 
-			//Trace.WriteLine("internal ObjectPool я-" + Thread.CurrentThread.Name);
+			//Trace.WriteLine("internal ObjectPool СЏ-" + Thread.CurrentThread.Name);
 			Thread[] t = new Thread[ConnectionsCount];
 			for (int i = 0; i < t.Length; i++) {
 				t[i] = new Thread(new ThreadStart(AddConnect));
@@ -249,7 +249,7 @@ namespace V8Gate {	 //комментарий 1
 				t[i].Start();
 			}
 			for (int i = 0; i < t.Length; i++) {
-				//Trace.WriteLine("Начал ждать " + i.ToString() + " я-" + Thread.CurrentThread.Name);
+				//Trace.WriteLine("РќР°С‡Р°Р» Р¶РґР°С‚СЊ " + i.ToString() + " СЏ-" + Thread.CurrentThread.Name);
 				t[i].Join();
 			}
 
@@ -261,11 +261,11 @@ namespace V8Gate {	 //комментарий 1
 		#endregion
 
 		private void AddConnect() {
-			//Trace.WriteLine("Начало AddConnect "+Thread.CurrentThread.Name);
+			//Trace.WriteLine("РќР°С‡Р°Р»Рѕ AddConnect "+Thread.CurrentThread.Name);
 			lock (_poolLock) {
 				unlocked.Add(CreateComConnect());
 			}
-			//Trace.WriteLine("Конец AddConnect " + Thread.CurrentThread.Name);
+			//Trace.WriteLine("РљРѕРЅРµС† AddConnect " + Thread.CurrentThread.Name);
 		}
 
 		private ComConnection CreateComConnect() {
@@ -437,7 +437,7 @@ namespace V8Gate {	 //комментарий 1
 
 		private void RollBackTransaction(Guid transactionId) {
 			using (DbConnection con1 = Instance.ConnectV8(transactionId)) {
-				con1.ОтменитьТранзакцию();
+				con1.РћС‚РјРµРЅРёС‚СЊРўСЂР°РЅР·Р°РєС†РёСЋ();
 			}
 
 		}

@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Xml.Serialization;
 using System.Reflection;
 using System.ComponentModel;
@@ -39,7 +39,7 @@ namespace V8Gate {
 
 		public static object Reference(ObjectRef aRef, DbConnection connection) {
 			string URINameSpace = string.Empty;
-			string ИмяТипа = aRef.GetType().Name; //base!!!!!!!!!
+			string РРјСЏРўРёРїР° = aRef.GetType().Name; //base!!!!!!!!!
 			Type RefType = aRef.GetType();
 			object[] aar = RefType.GetCustomAttributes(typeof(XmlTypeAttribute), true);
 			XmlTypeAttribute theXmlTypeAttribute=null;
@@ -52,21 +52,21 @@ namespace V8Gate {
 				if (URINameSpace == null) {
 					URINameSpace = string.Empty;
 				}
-				ИмяТипа = theXmlTypeAttribute.TypeName;
+				РРјСЏРўРёРїР° = theXmlTypeAttribute.TypeName;
 			}
-      object ТипXML = Call(connection.Connection, connection.Connection.comObject, "NewObject()", "XMLDataType", ИмяТипа, URINameSpace);
-      object V8Тип = Call(connection.Connection, connection.Connection.comObject, "FromXMLType()", ТипXML);
-			ReleaseComObject(ТипXML);
-			object V8Ref = connection.XMLЗначение(V8Тип, aRef.UUID.ToString());
-			ReleaseComObject(V8Тип);
+      object РўРёРїXML = Call(connection.Connection, connection.Connection.comObject, "NewObject()", "XMLDataType", РРјСЏРўРёРїР°, URINameSpace);
+      object V8РўРёРї = Call(connection.Connection, connection.Connection.comObject, "FromXMLType()", РўРёРїXML);
+			ReleaseComObject(РўРёРїXML);
+			object V8Ref = connection.XMLР—РЅР°С‡РµРЅРёРµ(V8РўРёРї, aRef.UUID.ToString());
+			ReleaseComObject(V8РўРёРї);
 			return V8Ref;
 		}
 
-    protected static object Invoke(ComConnection con, object obj, string Метод, BindingFlags Flags, object[] args) {
-      //System.Diagnostics.Trace.WriteLine(Метод);
+    protected static object Invoke(ComConnection con, object obj, string РњРµС‚РѕРґ, BindingFlags Flags, object[] args) {
+      //System.Diagnostics.Trace.WriteLine(РњРµС‚РѕРґ);
       object result;
       try {
-        result = obj.GetType().InvokeMember(Метод, Flags, null, obj, args);
+        result = obj.GetType().InvokeMember(РњРµС‚РѕРґ, Flags, null, obj, args);
 //#if (DEBUG)
 //        if ((result != null) && Marshal.IsComObject(result)) {
 //          Interlocked.Increment(ref ComCounter);
@@ -79,37 +79,37 @@ namespace V8Gate {
       return result;
     }
 
-    //public static object Call(DbConnection con, string Метод, params object[] list) {
-    //  return Call(con.connection, con.connection.comObject, Метод, list);
+    //public static object Call(DbConnection con, string РњРµС‚РѕРґ, params object[] list) {
+    //  return Call(con.connection, con.connection.comObject, РњРµС‚РѕРґ, list);
     //}
 
-		public static object Call(ComConnection con, object aComObj, string Метод, params object[] list) {
-			string[] Методы = Метод.Split('.');
-			int Всего = Методы.Length;
+		public static object Call(ComConnection con, object aComObj, string РњРµС‚РѕРґ, params object[] list) {
+			string[] РњРµС‚РѕРґС‹ = РњРµС‚РѕРґ.Split('.');
+			int Р’СЃРµРіРѕ = РњРµС‚РѕРґС‹.Length;
 			object res = aComObj;
 			BindingFlags Flags;
-			for (int i = 0; i < (Всего - 1); i++) {
-				string ТекМетод = Методы[i];
-				if (ТекМетод.EndsWith("()")) {
-					ТекМетод = ТекМетод.Substring(0, ТекМетод.Length - 2);
+			for (int i = 0; i < (Р’СЃРµРіРѕ - 1); i++) {
+				string РўРµРєРњРµС‚РѕРґ = РњРµС‚РѕРґС‹[i];
+				if (РўРµРєРњРµС‚РѕРґ.EndsWith("()")) {
+					РўРµРєРњРµС‚РѕРґ = РўРµРєРњРµС‚РѕРґ.Substring(0, РўРµРєРњРµС‚РѕРґ.Length - 2);
 					Flags = BindingFlags.InvokeMethod;
 				} else {
 					Flags = BindingFlags.GetProperty;
 				}
-				object NewRes=Invoke(con, res, ТекМетод, Flags, null);
+				object NewRes=Invoke(con, res, РўРµРєРњРµС‚РѕРґ, Flags, null);
 				if (!aComObj.Equals(res)) {
 					ReleaseComObject(res);
 				}
 				res = NewRes;
 			}
-			string Хвост = Методы[Всего - 1];
-			if (Хвост.EndsWith("()")) {
-				Хвост = Хвост.Substring(0, Хвост.Length - 2);
+			string РҐРІРѕСЃС‚ = РњРµС‚РѕРґС‹[Р’СЃРµРіРѕ - 1];
+			if (РҐРІРѕСЃС‚.EndsWith("()")) {
+				РҐРІРѕСЃС‚ = РҐРІРѕСЃС‚.Substring(0, РҐРІРѕСЃС‚.Length - 2);
 				Flags = BindingFlags.InvokeMethod;
 			} else {
 				Flags = BindingFlags.GetProperty;
 			}
-      object result = Invoke(con, res, Хвост, Flags, list);
+      object result = Invoke(con, res, РҐРІРѕСЃС‚, Flags, list);
 			if (!aComObj.Equals(res)) {
 				ReleaseComObject(res);
 			}
@@ -138,39 +138,39 @@ namespace V8Gate {
 			//ComObject theComObject3;
 			//object theObject2;
 			//object[] theObjectArray;
-			if (value == System.DBNull.Value) { //неопределено
+			if (value == System.DBNull.Value) { //РЅРµРѕРїСЂРµРґРµР»РµРЅРѕ
 				value = null;
 			} else if (value == null) {
-				value = System.DBNull.Value;    //это будет NULL в 1С
+				value = System.DBNull.Value;    //СЌС‚Рѕ Р±СѓРґРµС‚ NULL РІ 1РЎ
 			} else if (value is ObjectRef) {
 				value = Reference((ObjectRef)value, connection);
 			//} else if (value is TypeDescription) {
 			//  value = ((TypeDescription)value).GetTypeDescription(connection).comObject;
 			} else if (value is Enum) {
-				if ((value is РежимЗаписиДокумента) || (value is РежимПроведенияДокумента)) {//системные перечисления
-					Type ТипПеречисления = value.GetType();
-					string ИмяСистПереч = ТипПеречисления.Name + "." + value.ToString();
-          value = Call(connection.Connection, connection.Connection.comObject, ИмяСистПереч);
+				if ((value is Р РµР¶РёРјР—Р°РїРёСЃРёР”РѕРєСѓРјРµРЅС‚Р°) || (value is Р РµР¶РёРјРџСЂРѕРІРµРґРµРЅРёСЏР”РѕРєСѓРјРµРЅС‚Р°)) {//СЃРёСЃС‚РµРјРЅС‹Рµ РїРµСЂРµС‡РёСЃР»РµРЅРёСЏ
+					Type РўРёРїРџРµСЂРµС‡РёСЃР»РµРЅРёСЏ = value.GetType();
+					string РРјСЏРЎРёСЃС‚РџРµСЂРµС‡ = РўРёРїРџРµСЂРµС‡РёСЃР»РµРЅРёСЏ.Name + "." + value.ToString();
+          value = Call(connection.Connection, connection.Connection.comObject, РРјСЏРЎРёСЃС‚РџРµСЂРµС‡);
 				} else {
 					string Namespace = string.Empty;
-					string ИмяТипа = value.GetType().Name;
+					string РРјСЏРўРёРїР° = value.GetType().Name;
 					XmlTypeAttribute theXmlTypeAttribute = ((XmlTypeAttribute)TypeDescriptor.GetAttributes(value)[typeof(XmlTypeAttribute)]);
 					if (theXmlTypeAttribute != null) {
 						Namespace = theXmlTypeAttribute.Namespace;
 						if (Namespace == null) {
 							Namespace = string.Empty;
 						}
-						ИмяТипа = theXmlTypeAttribute.TypeName;
+						РРјСЏРўРёРїР° = theXmlTypeAttribute.TypeName;
 					}
-          Object XMLDataType = Call(connection.Connection, connection.Connection.comObject, "NewObject()", "XMLDataType", ИмяТипа, Namespace);
-					Object Тип1С = connection.ИзXMLТипа(XMLDataType);
+          Object XMLDataType = Call(connection.Connection, connection.Connection.comObject, "NewObject()", "XMLDataType", РРјСЏРўРёРїР°, Namespace);
+					Object РўРёРї1РЎ = connection.РР·XMLРўРёРїР°(XMLDataType);
 					ReleaseComObject(XMLDataType);
 					string theString3 = value.ToString();
 					if (theString3 == "EmptyRef") {
 						theString3 = string.Empty;
 					}
-					value = connection.XMLЗначение(Тип1С, theString3);
-					ReleaseComObject(Тип1С);
+					value = connection.XMLР—РЅР°С‡РµРЅРёРµ(РўРёРї1РЎ, theString3);
+					ReleaseComObject(РўРёРї1РЎ);
 					return value;
 				}
 			} else if (value is Array) {
@@ -193,18 +193,18 @@ namespace V8Gate {
 			//} else if (value is ComObject) {
 			//  value = ((ComObject)value).comObject;
 			} else if (Marshal.IsComObject(value)) {
-				throw new ArgumentException("COM-объект передан в ConvertValueNetToV8");
+				throw new ArgumentException("COM-РѕР±СЉРµРєС‚ РїРµСЂРµРґР°РЅ РІ ConvertValueNetToV8");
 			}
 			return value;
 		}
 
-		static readonly DateTime ПустаяДата=new DateTime(100,1,1);
+		static readonly DateTime РџСѓСЃС‚Р°СЏР”Р°С‚Р°=new DateTime(100,1,1);
 
     public static string ConvertValueV8ToJS(object value, DbConnection connection) {
       string result = null;
-			if (value == null) {//это Неопределено, пока оно заменяется на System.DBNull.Value
+			if (value == null) {//СЌС‚Рѕ РќРµРѕРїСЂРµРґРµР»РµРЅРѕ, РїРѕРєР° РѕРЅРѕ Р·Р°РјРµРЅСЏРµС‚СЃСЏ РЅР° System.DBNull.Value
         result = "undefined";
-      } else if (value == System.DBNull.Value) { //это NULL в 1С, переводим его в null
+      } else if (value == System.DBNull.Value) { //СЌС‚Рѕ NULL РІ 1РЎ, РїРµСЂРµРІРѕРґРёРј РµРіРѕ РІ null
         result = "null";
       } else if (value is bool) {
         result = ((bool)value) ? "true" : "false";
@@ -214,7 +214,7 @@ namespace V8Gate {
         //result = @"""" + ((string)value).TrimEnd().Replace(@"\", @"\\").Replace(@"""", @"\""") + @"""";
 			} else if (value is DateTime) {
 				DateTime dt = (DateTime)value;
-				if (dt == ПустаяДата) {
+				if (dt == РџСѓСЃС‚Р°СЏР”Р°С‚Р°) {
           result = "null";
 				} else {
           result = "new Date(" + dt.Year + "," + (dt.Month - 1) + "," + dt.Day + ")";
@@ -225,7 +225,7 @@ namespace V8Gate {
       } else if (value is double) {// || value is decimal || value is float) {
         result = ((IFormattable)value).ToString(null, new CultureInfo("en-US", false));
       } else if (Marshal.IsComObject(value)) {
-        result = @"""" + System.Web.HttpUtility.HtmlEncode(connection.XMLСтрока(value)) + @"""";
+        result = @"""" + System.Web.HttpUtility.HtmlEncode(connection.XMLРЎС‚СЂРѕРєР°(value)) + @"""";
       } else {
         throw new ArgumentException("Unexpected value type. Check ConvertValueV8ToJS function");
         //result = @"""" + value.ToString() + @"""";
@@ -234,11 +234,11 @@ namespace V8Gate {
     }
 
 		public static object ConvertValueV8ToNet(object value, DbConnection connection, Type aNetType) {
-			//Перечисления "РежимЗаписиДокумента" и "РежимПроведенияДокумента" не работают
-			//Видимо, нет случая, когда их придется получать из 1С
-			if (value == null) {//это Неопределено, пока оно заменяется на System.DBNull.Value
+			//РџРµСЂРµС‡РёСЃР»РµРЅРёСЏ "Р РµР¶РёРјР—Р°РїРёСЃРёР”РѕРєСѓРјРµРЅС‚Р°" Рё "Р РµР¶РёРјРџСЂРѕРІРµРґРµРЅРёСЏР”РѕРєСѓРјРµРЅС‚Р°" РЅРµ СЂР°Р±РѕС‚Р°СЋС‚
+			//Р’РёРґРёРјРѕ, РЅРµС‚ СЃР»СѓС‡Р°СЏ, РєРѕРіРґР° РёС… РїСЂРёРґРµС‚СЃСЏ РїРѕР»СѓС‡Р°С‚СЊ РёР· 1РЎ
+			if (value == null) {//СЌС‚Рѕ РќРµРѕРїСЂРµРґРµР»РµРЅРѕ, РїРѕРєР° РѕРЅРѕ Р·Р°РјРµРЅСЏРµС‚СЃСЏ РЅР° System.DBNull.Value
 				value = System.DBNull.Value;
-			} else if (value == System.DBNull.Value) { //это NULL в 1С, переводим его в null
+			} else if (value == System.DBNull.Value) { //СЌС‚Рѕ NULL РІ 1РЎ, РїРµСЂРµРІРѕРґРёРј РµРіРѕ РІ null
 				value = null;
 			} else if (value is double) {
 				value = ((decimal)((double)value));
@@ -248,7 +248,7 @@ namespace V8Gate {
 				value = (string)value;
 			} else if (value is DateTime) {
 				DateTime dt = (DateTime)value;
-				if (dt == ПустаяДата) {
+				if (dt == РџСѓСЃС‚Р°СЏР”Р°С‚Р°) {
 					value = DateTime.MinValue;
 				} else {
 					value = dt;
@@ -259,53 +259,53 @@ namespace V8Gate {
 			//  Marshal.ReleaseComObject(value);
 			//  value = null;
 			} else {
-				string ЗначениеСтрокой = connection.XMLСтрока(value);
-				bool ТипИзвестен = true;
+				string Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№ = connection.XMLРЎС‚СЂРѕРєР°(value);
+				bool РўРёРїРР·РІРµСЃС‚РµРЅ = true;
 				if (aNetType == null) {
-					ТипИзвестен = false;
+					РўРёРїРР·РІРµСЃС‚РµРЅ = false;
 				} else {
-          //if (aNetType.IsGenericType) { //Цель - отлов nullable типов. Возможно, это неправильный их признак
-					if (aNetType.IsGenericType && aNetType.GetGenericTypeDefinition().Equals(typeof(Nullable<>))) { //Цель - отлов nullable типов.
+          //if (aNetType.IsGenericType) { //Р¦РµР»СЊ - РѕС‚Р»РѕРІ nullable С‚РёРїРѕРІ. Р’РѕР·РјРѕР¶РЅРѕ, СЌС‚Рѕ РЅРµРїСЂР°РІРёР»СЊРЅС‹Р№ РёС… РїСЂРёР·РЅР°Рє
+					if (aNetType.IsGenericType && aNetType.GetGenericTypeDefinition().Equals(typeof(Nullable<>))) { //Р¦РµР»СЊ - РѕС‚Р»РѕРІ nullable С‚РёРїРѕРІ.
 						aNetType = Nullable.GetUnderlyingType(aNetType);
 						//aNetType = aNetType.GetMethod("get_Value").ReturnType;
 					}
-					if (aNetType == typeof(object)) { //составной тип, анализ по полной программе
-						ТипИзвестен = false;
+					if (aNetType == typeof(object)) { //СЃРѕСЃС‚Р°РІРЅРѕР№ С‚РёРї, Р°РЅР°Р»РёР· РїРѕ РїРѕР»РЅРѕР№ РїСЂРѕРіСЂР°РјРјРµ
+						РўРёРїРР·РІРµСЃС‚РµРЅ = false;
 					}
 				}
-				if (!ТипИзвестен) {
-					object ТипДанныхXML = connection.XMLТипЗнч(value);
-          string ИмяТипа = (string)Call(connection.Connection, ТипДанныхXML, "ИмяТипа");
-					ReleaseComObject(ТипДанныхXML);
-					if (V8TypeProvider.Instance.Dic.TryGetValue(ИмяТипа, out aNetType)) {
+				if (!РўРёРїРР·РІРµСЃС‚РµРЅ) {
+					object РўРёРїР”Р°РЅРЅС‹С…XML = connection.XMLРўРёРїР—РЅС‡(value);
+          string РРјСЏРўРёРїР° = (string)Call(connection.Connection, РўРёРїР”Р°РЅРЅС‹С…XML, "РРјСЏРўРёРїР°");
+					ReleaseComObject(РўРёРїР”Р°РЅРЅС‹С…XML);
+					if (V8TypeProvider.Instance.Dic.TryGetValue(РРјСЏРўРёРїР°, out aNetType)) {
 						if (aNetType.IsEnum) {
-							if (ЗначениеСтрокой == string.Empty) {
-								ЗначениеСтрокой = "EmptyRef";
+							if (Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№ == string.Empty) {
+								Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№ = "EmptyRef";
 							}
-							value = Enum.Parse(aNetType, ЗначениеСтрокой);
+							value = Enum.Parse(aNetType, Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№);
 						} else {
 							object res = Activator.CreateInstance(aNetType);
-							((ObjectRef)res).UUID = new Guid(ЗначениеСтрокой);
+							((ObjectRef)res).UUID = new Guid(Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№);
 							value = res;
 						}
 					} /*else {
-						if (string.Compare(ИмяТипа, "AccumulationMovementType", true) == 0) {
-							value = Enum.Parse(typeof(AccumulationMovementType), ЗначениеСтрокой);
-						} else if (string.Compare(ИмяТипа, "AccountType", true) == 0) {
-							value = Enum.Parse(typeof(AccountType), ЗначениеСтрокой);
-						} else if (string.Compare(ИмяТипа, "AccountingMovementType", true) == 0) {
-							value = Enum.Parse(typeof(AccountingMovementType), ЗначениеСтрокой);
+						if (string.Compare(РРјСЏРўРёРїР°, "AccumulationMovementType", true) == 0) {
+							value = Enum.Parse(typeof(AccumulationMovementType), Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№);
+						} else if (string.Compare(РРјСЏРўРёРїР°, "AccountType", true) == 0) {
+							value = Enum.Parse(typeof(AccountType), Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№);
+						} else if (string.Compare(РРјСЏРўРёРїР°, "AccountingMovementType", true) == 0) {
+							value = Enum.Parse(typeof(AccountingMovementType), Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№);
 						}
 					}*/
 				} else {
-					if (aNetType.IsEnum) { //дублирование кода!!!!!!!!!
-						if (ЗначениеСтрокой == string.Empty) {
-							ЗначениеСтрокой = "EmptyRef";
+					if (aNetType.IsEnum) { //РґСѓР±Р»РёСЂРѕРІР°РЅРёРµ РєРѕРґР°!!!!!!!!!
+						if (Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№ == string.Empty) {
+							Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№ = "EmptyRef";
 						}
-						value = Enum.Parse(aNetType, ЗначениеСтрокой);
+						value = Enum.Parse(aNetType, Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№);
 					} else {
 						object res = Activator.CreateInstance(aNetType);
-						((ObjectRef)res).UUID = new Guid(ЗначениеСтрокой);
+						((ObjectRef)res).UUID = new Guid(Р—РЅР°С‡РµРЅРёРµРЎС‚СЂРѕРєРѕР№);
 						value = res;
 					}
 				}
@@ -314,361 +314,361 @@ namespace V8Gate {
 			return value;
 		}
 
-    //public static bool ПроверитьЗапрос(string аТекстЗапроса, Type аТипыКолонок, params object[] аПараИмяЗнач) {
+    //public static bool РџСЂРѕРІРµСЂРёС‚СЊР—Р°РїСЂРѕСЃ(string Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, Type Р°РўРёРїС‹РљРѕР»РѕРЅРѕРє, params object[] Р°РџР°СЂР°РРјСЏР—РЅР°С‡) {
     //  DbConnections pool = DbConnections.Instance;
     //  DbConnection con = pool.ConnectV8();
-    //  object Res = ПолучитьРезультатЗапроса(con, аТекстЗапроса, null);
+    //  object Res = РџРѕР»СѓС‡РёС‚СЊР РµР·СѓР»СЊС‚Р°С‚Р—Р°РїСЂРѕСЃР°(con, Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, null);
     //  ReleaseComObject(Res);
     //  pool.ReturnDBConnection(con);
     //  return true;
     //}
 
-    public static object ПолучитьРезультатЗапроса(DbConnection con, string аТекстЗапроса) {
-      return ПолучитьРезультатЗапроса(con, аТекстЗапроса, null);
+    public static object РџРѕР»СѓС‡РёС‚СЊР РµР·СѓР»СЊС‚Р°С‚Р—Р°РїСЂРѕСЃР°(DbConnection con, string Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°) {
+      return РџРѕР»СѓС‡РёС‚СЊР РµР·СѓР»СЊС‚Р°С‚Р—Р°РїСЂРѕСЃР°(con, Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, null);
     }
 
-    public static object ПолучитьРезультатЗапроса(DbConnection con, string аТекстЗапроса, ПарамЗапроса[] аПараметры) {
-      object ОбъектЗапрос = Call(con.Connection, con.Connection.comObject, "NewObject()", "Запрос", аТекстЗапроса);
-      if (аПараметры != null) {
-        foreach (ПарамЗапроса Пар in аПараметры) {
-          object V8Знач = ConvertValueNetToV8(Пар.Знач, con);
-          Call(con.Connection, ОбъектЗапрос, "УстановитьПараметр()", Пар.Имя, V8Знач);
-          ReleaseComObject(V8Знач); //а это может и не быть ComObject
+    public static object РџРѕР»СѓС‡РёС‚СЊР РµР·СѓР»СЊС‚Р°С‚Р—Р°РїСЂРѕСЃР°(DbConnection con, string Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, РџР°СЂР°РјР—Р°РїСЂРѕСЃР°[] Р°РџР°СЂР°РјРµС‚СЂС‹) {
+      object РћР±СЉРµРєС‚Р—Р°РїСЂРѕСЃ = Call(con.Connection, con.Connection.comObject, "NewObject()", "Р—Р°РїСЂРѕСЃ", Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°);
+      if (Р°РџР°СЂР°РјРµС‚СЂС‹ != null) {
+        foreach (РџР°СЂР°РјР—Р°РїСЂРѕСЃР° РџР°СЂ in Р°РџР°СЂР°РјРµС‚СЂС‹) {
+          object V8Р—РЅР°С‡ = ConvertValueNetToV8(РџР°СЂ.Р—РЅР°С‡, con);
+          Call(con.Connection, РћР±СЉРµРєС‚Р—Р°РїСЂРѕСЃ, "РЈСЃС‚Р°РЅРѕРІРёС‚СЊРџР°СЂР°РјРµС‚СЂ()", РџР°СЂ.РРјСЏ, V8Р—РЅР°С‡);
+          ReleaseComObject(V8Р—РЅР°С‡); //Р° СЌС‚Рѕ РјРѕР¶РµС‚ Рё РЅРµ Р±С‹С‚СЊ ComObject
         }
       }
-      object Рез = Call(con.Connection, ОбъектЗапрос, "Выполнить()");
-			ReleaseComObject(ОбъектЗапрос);
-			return Рез;
+      object Р РµР· = Call(con.Connection, РћР±СЉРµРєС‚Р—Р°РїСЂРѕСЃ, "Р’С‹РїРѕР»РЅРёС‚СЊ()");
+			ReleaseComObject(РћР±СЉРµРєС‚Р—Р°РїСЂРѕСЃ);
+			return Р РµР·;
 		}
 
-		//public static List<ТипыКолонок> ВыполнитьЗапрос<ТипыКолонок>(string аТекстЗапроса)
-    //  where ТипыКолонок : new() {
-    //  return ВыполнитьЗапрос<ТипыКолонок>(аТекстЗапроса, null); 		
+		//public static List<РўРёРїС‹РљРѕР»РѕРЅРѕРє> Р’С‹РїРѕР»РЅРёС‚СЊР—Р°РїСЂРѕСЃ<РўРёРїС‹РљРѕР»РѕРЅРѕРє>(string Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°)
+    //  where РўРёРїС‹РљРѕР»РѕРЅРѕРє : new() {
+    //  return Р’С‹РїРѕР»РЅРёС‚СЊР—Р°РїСЂРѕСЃ<РўРёРїС‹РљРѕР»РѕРЅРѕРє>(Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, null); 		
     //}
 
-    //public static List<ТипыКолонок> ВыполнитьЗапрос<ТипыКолонок>(string аТекстЗапроса, ПарамЗапроса[] аПараметры) 
-    //  where ТипыКолонок:new() {
+    //public static List<РўРёРїС‹РљРѕР»РѕРЅРѕРє> Р’С‹РїРѕР»РЅРёС‚СЊР—Р°РїСЂРѕСЃ<РўРёРїС‹РљРѕР»РѕРЅРѕРє>(string Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, РџР°СЂР°РјР—Р°РїСЂРѕСЃР°[] Р°РџР°СЂР°РјРµС‚СЂС‹) 
+    //  where РўРёРїС‹РљРѕР»РѕРЅРѕРє:new() {
     //  DbConnections pool = DbConnections.Instance;
     //  DbConnection con = pool.ConnectV8();
-    //  object ComResult = ПолучитьРезультатЗапроса(con, аТекстЗапроса, аПараметры);
-    //  List<ТипыКолонок> lst=QueryReader<ТипыКолонок>(con, ComResult);
+    //  object ComResult = РџРѕР»СѓС‡РёС‚СЊР РµР·СѓР»СЊС‚Р°С‚Р—Р°РїСЂРѕСЃР°(con, Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, Р°РџР°СЂР°РјРµС‚СЂС‹);
+    //  List<РўРёРїС‹РљРѕР»РѕРЅРѕРє> lst=QueryReader<РўРёРїС‹РљРѕР»РѕРЅРѕРє>(con, ComResult);
     //  ReleaseComObject(ComResult);
     //  pool.ReturnDBConnection(con);
     //  return lst;
     //}
 
-    //class ИнфОПоле {
+    //class РРЅС„РћРџРѕР»Рµ {
     //  public PropertyInfo PtyInfo;
-    //  public int ИндексСсылки;
-    //  public string ИмяСсылки;
-    //  public string Представление;
-    //  public bool ЭтоПредст;
-    //  public object Значение;
-    //  public int ИндексРез;			//используется только при работе с квадратным массивом
-    //  public Type Тип;		    	//используется только при работе с квадратным массивом
+    //  public int РРЅРґРµРєСЃРЎСЃС‹Р»РєРё;
+    //  public string РРјСЏРЎСЃС‹Р»РєРё;
+    //  public string РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ;
+    //  public bool Р­С‚РѕРџСЂРµРґСЃС‚;
+    //  public object Р—РЅР°С‡РµРЅРёРµ;
+    //  public int РРЅРґРµРєСЃР РµР·;			//РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РїСЂРё СЂР°Р±РѕС‚Рµ СЃ РєРІР°РґСЂР°С‚РЅС‹Рј РјР°СЃСЃРёРІРѕРј
+    //  public Type РўРёРї;		    	//РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РїСЂРё СЂР°Р±РѕС‚Рµ СЃ РєРІР°РґСЂР°С‚РЅС‹Рј РјР°СЃСЃРёРІРѕРј
     //}
 
-		const string констПредставление="Представление";
+		const string РєРѕРЅСЃС‚РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ="РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ";
 
-    //public static List<ТипыКолонок> QueryReader<ТипыКолонок>(DbConnection connection, object result)
-    //  where ТипыКолонок:new() {
+    //public static List<РўРёРїС‹РљРѕР»РѕРЅРѕРє> QueryReader<РўРёРїС‹РљРѕР»РѕРЅРѕРє>(DbConnection connection, object result)
+    //  where РўРёРїС‹РљРѕР»РѕРЅРѕРє:new() {
 
-    //  List<ИнфОПоле> ПоляЗапроса = new List<ИнфОПоле>();
-    //  List<ТипыКолонок> aResList = new List<ТипыКолонок>();
+    //  List<РРЅС„РћРџРѕР»Рµ> РџРѕР»СЏР—Р°РїСЂРѕСЃР° = new List<РРЅС„РћРџРѕР»Рµ>();
+    //  List<РўРёРїС‹РљРѕР»РѕРЅРѕРє> aResList = new List<РўРёРїС‹РљРѕР»РѕРЅРѕРє>();
 
-    //  object ComObjКолонки = Get(result, "Колонки");
-    //  int ЧислоКолВЗапросе = (int)Get(ComObjКолонки, "Количество()");
-    //  Dictionary<string,int> Dic = new Dictionary<string,int>(ЧислоКолВЗапросе);
-    //  int[] ИндексыПредставлений=new int[ЧислоКолВЗапросе];
-    //  int КолвоПредст = 0;
-    //  for (int i = 0; i != ЧислоКолВЗапросе; i++) {
-    //    object ComObjКолонка = Get(ComObjКолонки, "Получить()", i);
-    //    string ИмяКолон = (string)Get(ComObjКолонка, "Имя");
-    //    ReleaseComObject(ComObjКолонка);
-    //    Dic[ИмяКолон] = i;
-    //    ИнфОПоле Поле=new ИнфОПоле();
-    //    Поле.ЭтоПредст = ИмяКолон.EndsWith(констПредставление);
-    //    if (Поле.ЭтоПредст) {
-    //      Поле.ИмяСсылки = ИмяКолон.Substring(0, ИмяКолон.Length - констПредставление.Length);
-    //      ИндексыПредставлений[КолвоПредст] = i;
-    //      КолвоПредст++;
-    //      PropertyInfo pty = typeof(ТипыКолонок).GetProperty(Поле.ИмяСсылки);
+    //  object ComObjРљРѕР»РѕРЅРєРё = Get(result, "РљРѕР»РѕРЅРєРё");
+    //  int Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ = (int)Get(ComObjРљРѕР»РѕРЅРєРё, "РљРѕР»РёС‡РµСЃС‚РІРѕ()");
+    //  Dictionary<string,int> Dic = new Dictionary<string,int>(Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ);
+    //  int[] РРЅРґРµРєСЃС‹РџСЂРµРґСЃС‚Р°РІР»РµРЅРёР№=new int[Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ];
+    //  int РљРѕР»РІРѕРџСЂРµРґСЃС‚ = 0;
+    //  for (int i = 0; i != Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ; i++) {
+    //    object ComObjРљРѕР»РѕРЅРєР° = Get(ComObjРљРѕР»РѕРЅРєРё, "РџРѕР»СѓС‡РёС‚СЊ()", i);
+    //    string РРјСЏРљРѕР»РѕРЅ = (string)Get(ComObjРљРѕР»РѕРЅРєР°, "РРјСЏ");
+    //    ReleaseComObject(ComObjРљРѕР»РѕРЅРєР°);
+    //    Dic[РРјСЏРљРѕР»РѕРЅ] = i;
+    //    РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ=new РРЅС„РћРџРѕР»Рµ();
+    //    РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚ = РРјСЏРљРѕР»РѕРЅ.EndsWith(РєРѕРЅСЃС‚РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ);
+    //    if (РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚) {
+    //      РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё = РРјСЏРљРѕР»РѕРЅ.Substring(0, РРјСЏРљРѕР»РѕРЅ.Length - РєРѕРЅСЃС‚РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ.Length);
+    //      РРЅРґРµРєСЃС‹РџСЂРµРґСЃС‚Р°РІР»РµРЅРёР№[РљРѕР»РІРѕРџСЂРµРґСЃС‚] = i;
+    //      РљРѕР»РІРѕРџСЂРµРґСЃС‚++;
+    //      PropertyInfo pty = typeof(РўРёРїС‹РљРѕР»РѕРЅРѕРє).GetProperty(РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё);
     //      if (pty == null) {
-    //        throw new ArgumentException("В запросе нет поля типа ссылка с именем " + Поле.ИмяСсылки);
+    //        throw new ArgumentException("Р’ Р·Р°РїСЂРѕСЃРµ РЅРµС‚ РїРѕР»СЏ С‚РёРїР° СЃСЃС‹Р»РєР° СЃ РёРјРµРЅРµРј " + РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё);
     //      }
-    //      Поле.PtyInfo = null;
+    //      РџРѕР»Рµ.PtyInfo = null;
     //      if (pty.PropertyType.IsSubclassOf(typeof(ObjectRef))) {
-    //        Поле.PtyInfo = pty.PropertyType.GetProperty("Представление");
+    //        РџРѕР»Рµ.PtyInfo = pty.PropertyType.GetProperty("РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ");
     //      } else if (pty.PropertyType != typeof(object)) {
-    //        throw new ArgumentException("В запросе поле " + Поле.ИмяСсылки + " должно быть типа ссылка или object");
+    //        throw new ArgumentException("Р’ Р·Р°РїСЂРѕСЃРµ РїРѕР»Рµ " + РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё + " РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ С‚РёРїР° СЃСЃС‹Р»РєР° РёР»Рё object");
     //      }
     //    } else {
-    //      Поле.PtyInfo = typeof(ТипыКолонок).GetProperty(ИмяКолон);
+    //      РџРѕР»Рµ.PtyInfo = typeof(РўРёРїС‹РљРѕР»РѕРЅРѕРє).GetProperty(РРјСЏРљРѕР»РѕРЅ);
     //    }
-    //    ПоляЗапроса.Add(Поле);
+    //    РџРѕР»СЏР—Р°РїСЂРѕСЃР°.Add(РџРѕР»Рµ);
     //    /*
-    //    object ТипыКолон = Get(Колон, "ТипЗначения.Типы()");
-    //    int КолТипов = (int)Get(ТипыКолон, "Количество()");
-    //    for (int j = 0; j != КолТипов; j++) {
-    //      object ОдинТип = Get(ТипыКолон, "Получить()", j);
-    //      object XMLСтрукт = Get(connection, "XMLТип()", ОдинТип);
-    //      string А = (string)Get(XMLСтрукт, "URIПространстваИмен");
-    //      string ИмяТипа = (string)Get(XMLСтрукт, "ИмяТипа");
+    //    object РўРёРїС‹РљРѕР»РѕРЅ = Get(РљРѕР»РѕРЅ, "РўРёРїР—РЅР°С‡РµРЅРёСЏ.РўРёРїС‹()");
+    //    int РљРѕР»РўРёРїРѕРІ = (int)Get(РўРёРїС‹РљРѕР»РѕРЅ, "РљРѕР»РёС‡РµСЃС‚РІРѕ()");
+    //    for (int j = 0; j != РљРѕР»РўРёРїРѕРІ; j++) {
+    //      object РћРґРёРЅРўРёРї = Get(РўРёРїС‹РљРѕР»РѕРЅ, "РџРѕР»СѓС‡РёС‚СЊ()", j);
+    //      object XMLРЎС‚СЂСѓРєС‚ = Get(connection, "XMLРўРёРї()", РћРґРёРЅРўРёРї);
+    //      string Рђ = (string)Get(XMLРЎС‚СЂСѓРєС‚, "URIРџСЂРѕСЃС‚СЂР°РЅСЃС‚РІР°РРјРµРЅ");
+    //      string РРјСЏРўРёРїР° = (string)Get(XMLРЎС‚СЂСѓРєС‚, "РРјСЏРўРёРїР°");
     //    } */
     //  }
-    //  ReleaseComObject(ComObjКолонки);
-    //  for (int i = 0; i < КолвоПредст; i++){
-    //    ИнфОПоле Поле = ПоляЗапроса[ИндексыПредставлений[i]];
-    //    Поле.ИндексСсылки = Dic[Поле.ИмяСсылки];
-    //    //PropertyInfo pi = ПоляЗапроса[Поле.ИндексСсылки].PtyInfo;
+    //  ReleaseComObject(ComObjРљРѕР»РѕРЅРєРё);
+    //  for (int i = 0; i < РљРѕР»РІРѕРџСЂРµРґСЃС‚; i++){
+    //    РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[РРЅРґРµРєСЃС‹РџСЂРµРґСЃС‚Р°РІР»РµРЅРёР№[i]];
+    //    РџРѕР»Рµ.РРЅРґРµРєСЃРЎСЃС‹Р»РєРё = Dic[РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё];
+    //    //PropertyInfo pi = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[РџРѕР»Рµ.РРЅРґРµРєСЃРЎСЃС‹Р»РєРё].PtyInfo;
     //    //if (pi.PropertyType.IsSubclassOf(typeof(ObjectRef))) {
-    //    //  Поле.PtyInfo = pi.PropertyType.GetProperty("Представление");
+    //    //  РџРѕР»Рµ.PtyInfo = pi.PropertyType.GetProperty("РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ");
     //    //} else if (pi.PropertyType != typeof(object)) {
-    //    //  throw new ArgumentException("В запросе поле " + Поле.ИмяСсылки + " должно иметь тип ссылка или object");
+    //    //  throw new ArgumentException("Р’ Р·Р°РїСЂРѕСЃРµ РїРѕР»Рµ " + РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё + " РґРѕР»Р¶РЅРѕ РёРјРµС‚СЊ С‚РёРї СЃСЃС‹Р»РєР° РёР»Рё object");
     //    //}
     //  }
 
-    //  object ComВыборка = Get(result, "Выбрать()");
-    //  while ((bool)Get(ComВыборка, "Следующий()")) {
-    //    object Стр = new ТипыКолонок(); //object Стр = Activator.CreateInstance(typeof(ТипыКолонок));
-    //    for (int i = 0; i != ЧислоКолВЗапросе; i++) {
-    //      ИнфОПоле Поле = ПоляЗапроса[i];
-    //      object V8Поле = Get(ComВыборка, "Получить()", i);
-    //      object Значение = ConvertValueV8ToNet(V8Поле, connection, Поле.PtyInfo == null ? null : Поле.PtyInfo.PropertyType);
-    //      ReleaseComObject(V8Поле);
-    //      if (Поле.ЭтоПредст) {
-    //        Поле.Представление=(string)Значение;
+    //  object ComР’С‹Р±РѕСЂРєР° = Get(result, "Р’С‹Р±СЂР°С‚СЊ()");
+    //  while ((bool)Get(ComР’С‹Р±РѕСЂРєР°, "РЎР»РµРґСѓСЋС‰РёР№()")) {
+    //    object РЎС‚СЂ = new РўРёРїС‹РљРѕР»РѕРЅРѕРє(); //object РЎС‚СЂ = Activator.CreateInstance(typeof(РўРёРїС‹РљРѕР»РѕРЅРѕРє));
+    //    for (int i = 0; i != Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ; i++) {
+    //      РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[i];
+    //      object V8РџРѕР»Рµ = Get(ComР’С‹Р±РѕСЂРєР°, "РџРѕР»СѓС‡РёС‚СЊ()", i);
+    //      object Р—РЅР°С‡РµРЅРёРµ = ConvertValueV8ToNet(V8РџРѕР»Рµ, connection, РџРѕР»Рµ.PtyInfo == null ? null : РџРѕР»Рµ.PtyInfo.PropertyType);
+    //      ReleaseComObject(V8РџРѕР»Рµ);
+    //      if (РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚) {
+    //        РџРѕР»Рµ.РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ=(string)Р—РЅР°С‡РµРЅРёРµ;
     //      } else {
-    //        Поле.Значение = Значение;
-    //        Поле.PtyInfo.SetValue(Стр, Значение, null);
+    //        РџРѕР»Рµ.Р—РЅР°С‡РµРЅРёРµ = Р—РЅР°С‡РµРЅРёРµ;
+    //        РџРѕР»Рµ.PtyInfo.SetValue(РЎС‚СЂ, Р—РЅР°С‡РµРЅРёРµ, null);
     //      }
     //    }
-    //    for (int i = 0; i < КолвоПредст; i++) {
-    //      ИнфОПоле Поле = ПоляЗапроса[ИндексыПредставлений[i]];
-    //      object Предст = Поле.Представление;
-    //      object Ссылка = ПоляЗапроса[Поле.ИндексСсылки].Значение;
-    //      if (Поле.PtyInfo != null) {
-    //        Поле.PtyInfo.SetValue(Ссылка, Предст, null);
+    //    for (int i = 0; i < РљРѕР»РІРѕРџСЂРµРґСЃС‚; i++) {
+    //      РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[РРЅРґРµРєСЃС‹РџСЂРµРґСЃС‚Р°РІР»РµРЅРёР№[i]];
+    //      object РџСЂРµРґСЃС‚ = РџРѕР»Рµ.РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ;
+    //      object РЎСЃС‹Р»РєР° = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[РџРѕР»Рµ.РРЅРґРµРєСЃРЎСЃС‹Р»РєРё].Р—РЅР°С‡РµРЅРёРµ;
+    //      if (РџРѕР»Рµ.PtyInfo != null) {
+    //        РџРѕР»Рµ.PtyInfo.SetValue(РЎСЃС‹Р»РєР°, РџСЂРµРґСЃС‚, null);
     //      }
     //      else {
-    //        PropertyInfo prop = Ссылка.GetType().GetProperty("Представление");
+    //        PropertyInfo prop = РЎСЃС‹Р»РєР°.GetType().GetProperty("РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ");
     //        if (prop != null) {
-    //          prop.SetValue(Ссылка, Предст, null);
+    //          prop.SetValue(РЎСЃС‹Р»РєР°, РџСЂРµРґСЃС‚, null);
     //        }
     //      }
     //    }
-    //    aResList.Add((ТипыКолонок)Стр);
+    //    aResList.Add((РўРёРїС‹РљРѕР»РѕРЅРѕРє)РЎС‚СЂ);
     //  }
-    //  ReleaseComObject(ComВыборка);
+    //  ReleaseComObject(ComР’С‹Р±РѕСЂРєР°);
     //  return aResList;
     //}
 
-		//		public static IEnumerable<ТипыКолонок> Выбрать<ТипыКолонок>(DbConnection connection, object result)
-		//			where ТипыКолонок:new() {
-		//			List<FieldInfo> ПоляЗапроса = new List<FieldInfo>();
+		//		public static IEnumerable<РўРёРїС‹РљРѕР»РѕРЅРѕРє> Р’С‹Р±СЂР°С‚СЊ<РўРёРїС‹РљРѕР»РѕРЅРѕРє>(DbConnection connection, object result)
+		//			where РўРёРїС‹РљРѕР»РѕРЅРѕРє:new() {
+		//			List<FieldInfo> РџРѕР»СЏР—Р°РїСЂРѕСЃР° = new List<FieldInfo>();
 		//
-		//			object Колонки = Get(result, "Колонки");
-		//			int ЧислоКол = (int)Get(Колонки, "Количество()");
+		//			object РљРѕР»РѕРЅРєРё = Get(result, "РљРѕР»РѕРЅРєРё");
+		//			int Р§РёСЃР»РѕРљРѕР» = (int)Get(РљРѕР»РѕРЅРєРё, "РљРѕР»РёС‡РµСЃС‚РІРѕ()");
 		//
-		//			for (int i = 0; i != ЧислоКол; i++) {
-		//				object Колон = Get(Колонки, "Получить()", i);
-		//				string ИмяКолон = (string)Get(Колон, "Имя");
-		//				FieldInfo Поле = typeof(ТипыКолонок).GetField(ИмяКолон);
-		//				ПоляЗапроса.Add(Поле);
+		//			for (int i = 0; i != Р§РёСЃР»РѕРљРѕР»; i++) {
+		//				object РљРѕР»РѕРЅ = Get(РљРѕР»РѕРЅРєРё, "РџРѕР»СѓС‡РёС‚СЊ()", i);
+		//				string РРјСЏРљРѕР»РѕРЅ = (string)Get(РљРѕР»РѕРЅ, "РРјСЏ");
+		//				FieldInfo РџРѕР»Рµ = typeof(РўРёРїС‹РљРѕР»РѕРЅРѕРє).GetField(РРјСЏРљРѕР»РѕРЅ);
+		//				РџРѕР»СЏР—Р°РїСЂРѕСЃР°.Add(РџРѕР»Рµ);
 		//			}
-		//			object Выборка = Get(result, "Выбрать()");
-		//			while ((bool)Get(Выборка, "Следующий()")) {
-		//				object Стр = new ТипыКолонок(); //object Стр = Activator.CreateInstance(typeof(ТипыКолонок));
-		//				for (int i = 0; i != ЧислоКол; i++) {
-		//					FieldInfo Поле = ПоляЗапроса[i];
-		//					object Значение = ConvertValueV8ToNet(Get(Выборка, "Получить()", i), connection, Поле.FieldType);
-		//					Поле.SetValue(Стр, Значение);
+		//			object Р’С‹Р±РѕСЂРєР° = Get(result, "Р’С‹Р±СЂР°С‚СЊ()");
+		//			while ((bool)Get(Р’С‹Р±РѕСЂРєР°, "РЎР»РµРґСѓСЋС‰РёР№()")) {
+		//				object РЎС‚СЂ = new РўРёРїС‹РљРѕР»РѕРЅРѕРє(); //object РЎС‚СЂ = Activator.CreateInstance(typeof(РўРёРїС‹РљРѕР»РѕРЅРѕРє));
+		//				for (int i = 0; i != Р§РёСЃР»РѕРљРѕР»; i++) {
+		//					FieldInfo РџРѕР»Рµ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[i];
+		//					object Р—РЅР°С‡РµРЅРёРµ = ConvertValueV8ToNet(Get(Р’С‹Р±РѕСЂРєР°, "РџРѕР»СѓС‡РёС‚СЊ()", i), connection, РџРѕР»Рµ.FieldType);
+		//					РџРѕР»Рµ.SetValue(РЎС‚СЂ, Р—РЅР°С‡РµРЅРёРµ);
 		//				}
-		//				yield return (ТипыКолонок)Стр;
+		//				yield return (РўРёРїС‹РљРѕР»РѕРЅРѕРє)РЎС‚СЂ;
 		//			}
 		//		}
 
-    //public static object[,] ВыполнитьЗапрос(string аТекстЗапроса, ПарамЗапроса[] аПараметры, 
-    //  Type[] ТипыКолонок, string[] ИменаКолонок) {
+    //public static object[,] Р’С‹РїРѕР»РЅРёС‚СЊР—Р°РїСЂРѕСЃ(string Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, РџР°СЂР°РјР—Р°РїСЂРѕСЃР°[] Р°РџР°СЂР°РјРµС‚СЂС‹, 
+    //  Type[] РўРёРїС‹РљРѕР»РѕРЅРѕРє, string[] РРјРµРЅР°РљРѕР»РѕРЅРѕРє) {
     //  DbConnections pool = DbConnections.Instance;
     //  DbConnection con = pool.ConnectV8();
-    //  object ComObjQueryResult = ПолучитьРезультатЗапроса(con, аТекстЗапроса, аПараметры);
+    //  object ComObjQueryResult = РџРѕР»СѓС‡РёС‚СЊР РµР·СѓР»СЊС‚Р°С‚Р—Р°РїСЂРѕСЃР°(con, Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, Р°РџР°СЂР°РјРµС‚СЂС‹);
 
-    //  List<ИнфОПоле> ПоляЗапроса = new List<ИнфОПоле>();
-    //  object ComObjКолонки = Get(ComObjQueryResult, "Колонки");
-    //  int ЧислоКолВЗапросе = (int)Get(ComObjКолонки, "Количество()");
+    //  List<РРЅС„РћРџРѕР»Рµ> РџРѕР»СЏР—Р°РїСЂРѕСЃР° = new List<РРЅС„РћРџРѕР»Рµ>();
+    //  object ComObjРљРѕР»РѕРЅРєРё = Get(ComObjQueryResult, "РљРѕР»РѕРЅРєРё");
+    //  int Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ = (int)Get(ComObjРљРѕР»РѕРЅРєРё, "РљРѕР»РёС‡РµСЃС‚РІРѕ()");
 
-    //  Dictionary<string, int> Dic = new Dictionary<string, int>(ЧислоКолВЗапросе);
-    //  int[] ИндексыПредставлений = new int[ЧислоКолВЗапросе];
-    //  int КолвоПредст = 0;
+    //  Dictionary<string, int> Dic = new Dictionary<string, int>(Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ);
+    //  int[] РРЅРґРµРєСЃС‹РџСЂРµРґСЃС‚Р°РІР»РµРЅРёР№ = new int[Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ];
+    //  int РљРѕР»РІРѕРџСЂРµРґСЃС‚ = 0;
     //  int m = 0;
-    //  for (int i = 0; i != ЧислоКолВЗапросе; i++) {
-    //    object ComObjКолонка = Get(ComObjКолонки, "Получить()", i);
-    //    string ИмяКолон = (string)Get(ComObjКолонка, "Имя");
-    //    ReleaseComObject(ComObjКолонка);
-    //    Dic[ИмяКолон] = i;
-    //    ИнфОПоле Поле = new ИнфОПоле();
-    //    Поле.ЭтоПредст = ИмяКолон.EndsWith(констПредставление);
-    //    if (!Поле.ЭтоПредст) {
-    //      if (m >= ТипыКолонок.Length) {
-    //        throw new ArgumentException(@"Слишком мало properties в классе запроса");
+    //  for (int i = 0; i != Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ; i++) {
+    //    object ComObjРљРѕР»РѕРЅРєР° = Get(ComObjРљРѕР»РѕРЅРєРё, "РџРѕР»СѓС‡РёС‚СЊ()", i);
+    //    string РРјСЏРљРѕР»РѕРЅ = (string)Get(ComObjРљРѕР»РѕРЅРєР°, "РРјСЏ");
+    //    ReleaseComObject(ComObjРљРѕР»РѕРЅРєР°);
+    //    Dic[РРјСЏРљРѕР»РѕРЅ] = i;
+    //    РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = new РРЅС„РћРџРѕР»Рµ();
+    //    РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚ = РРјСЏРљРѕР»РѕРЅ.EndsWith(РєРѕРЅСЃС‚РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ);
+    //    if (!РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚) {
+    //      if (m >= РўРёРїС‹РљРѕР»РѕРЅРѕРє.Length) {
+    //        throw new ArgumentException(@"РЎР»РёС€РєРѕРј РјР°Р»Рѕ properties РІ РєР»Р°СЃСЃРµ Р·Р°РїСЂРѕСЃР°");
     //      }
-    //      if (ИмяКолон != ИменаКолонок[m]) {
-    //        throw new ArgumentException(@"Должно идти property """ + ИмяКолон + @""", а не """ + ИменаКолонок[m] + @"""");
+    //      if (РРјСЏРљРѕР»РѕРЅ != РРјРµРЅР°РљРѕР»РѕРЅРѕРє[m]) {
+    //        throw new ArgumentException(@"Р”РѕР»Р¶РЅРѕ РёРґС‚Рё property """ + РРјСЏРљРѕР»РѕРЅ + @""", Р° РЅРµ """ + РРјРµРЅР°РљРѕР»РѕРЅРѕРє[m] + @"""");
     //      }
-    //      Поле.Тип = ТипыКолонок[m];
-    //      Поле.ИндексРез = m++;
+    //      РџРѕР»Рµ.РўРёРї = РўРёРїС‹РљРѕР»РѕРЅРѕРє[m];
+    //      РџРѕР»Рµ.РРЅРґРµРєСЃР РµР· = m++;
     //    } else {
-    //      Поле.ИмяСсылки = ИмяКолон.Substring(0, ИмяКолон.Length - констПредставление.Length);
-    //      ИндексыПредставлений[КолвоПредст] = i;
-    //      КолвоПредст++;
+    //      РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё = РРјСЏРљРѕР»РѕРЅ.Substring(0, РРјСЏРљРѕР»РѕРЅ.Length - РєРѕРЅСЃС‚РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ.Length);
+    //      РРЅРґРµРєСЃС‹РџСЂРµРґСЃС‚Р°РІР»РµРЅРёР№[РљРѕР»РІРѕРџСЂРµРґСЃС‚] = i;
+    //      РљРѕР»РІРѕРџСЂРµРґСЃС‚++;
     //    }
-    //    ПоляЗапроса.Add(Поле);
+    //    РџРѕР»СЏР—Р°РїСЂРѕСЃР°.Add(РџРѕР»Рµ);
     //  }
-    //  ReleaseComObject(ComObjКолонки);
+    //  ReleaseComObject(ComObjРљРѕР»РѕРЅРєРё);
 
-    //  for (int i = 0; i < КолвоПредст; i++) {
-    //    ИнфОПоле Поле = ПоляЗапроса[ИндексыПредставлений[i]];
+    //  for (int i = 0; i < РљРѕР»РІРѕРџСЂРµРґСЃС‚; i++) {
+    //    РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[РРЅРґРµРєСЃС‹РџСЂРµРґСЃС‚Р°РІР»РµРЅРёР№[i]];
 
-    //    if (!Dic.TryGetValue(Поле.ИмяСсылки, out Поле.ИндексСсылки)) {
-    //      throw new ArgumentException("В запросе нет поля типа ссылка с именем " + Поле.ИмяСсылки);
+    //    if (!Dic.TryGetValue(РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё, out РџРѕР»Рµ.РРЅРґРµРєСЃРЎСЃС‹Р»РєРё)) {
+    //      throw new ArgumentException("Р’ Р·Р°РїСЂРѕСЃРµ РЅРµС‚ РїРѕР»СЏ С‚РёРїР° СЃСЃС‹Р»РєР° СЃ РёРјРµРЅРµРј " + РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё);
     //    }
-    //    //Добавить: 1.Диагностику 2.Оптимизацию !!!!!!!!!!
-    //    //Type ty = ПоляЗапроса[Поле.ИндексСсылки].Тип;
-    //    //Поле.PtyInfo = ty.GetProperty("Представление");
-    //    //if (Поле.PtyInfo == null) {
-    //    //  throw new ArgumentException("В запросе поле " + Поле.ИмяСсылки+" должно иметь тип ссылка");
+    //    //Р”РѕР±Р°РІРёС‚СЊ: 1.Р”РёР°РіРЅРѕСЃС‚РёРєСѓ 2.РћРїС‚РёРјРёР·Р°С†РёСЋ !!!!!!!!!!
+    //    //Type ty = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[РџРѕР»Рµ.РРЅРґРµРєСЃРЎСЃС‹Р»РєРё].РўРёРї;
+    //    //РџРѕР»Рµ.PtyInfo = ty.GetProperty("РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ");
+    //    //if (РџРѕР»Рµ.PtyInfo == null) {
+    //    //  throw new ArgumentException("Р’ Р·Р°РїСЂРѕСЃРµ РїРѕР»Рµ " + РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё+" РґРѕР»Р¶РЅРѕ РёРјРµС‚СЊ С‚РёРї СЃСЃС‹Р»РєР°");
     //    //}
     //  }
 			
-    //  object Выборка = Get(ComObjQueryResult, "Выбрать()");
+    //  object Р’С‹Р±РѕСЂРєР° = Get(ComObjQueryResult, "Р’С‹Р±СЂР°С‚СЊ()");
     //  ReleaseComObject(ComObjQueryResult);
-    //  int Количество = (int)Get(Выборка, "Количество()");
-    //  object[,] Результат = new object[Количество, ТипыКолонок.Length];
+    //  int РљРѕР»РёС‡РµСЃС‚РІРѕ = (int)Get(Р’С‹Р±РѕСЂРєР°, "РљРѕР»РёС‡РµСЃС‚РІРѕ()");
+    //  object[,] Р РµР·СѓР»СЊС‚Р°С‚ = new object[РљРѕР»РёС‡РµСЃС‚РІРѕ, РўРёРїС‹РљРѕР»РѕРЅРѕРє.Length];
     //  int j=0;
-    //  while ((bool)Get(Выборка, "Следующий()")) {
+    //  while ((bool)Get(Р’С‹Р±РѕСЂРєР°, "РЎР»РµРґСѓСЋС‰РёР№()")) {
     //    int k=0;
-    //    for (int i = 0; i != ЧислоКолВЗапросе; i++) {
-    //      ИнфОПоле Поле = ПоляЗапроса[i];
-    //      object V8Поле = Get(Выборка, "Получить()", i);
-    //      object Значение = ConvertValueV8ToNet(V8Поле, con, Поле.Тип);
-    //      ReleaseComObject(V8Поле);  //это может быть не ComObject
-    //      if (Поле.ЭтоПредст) {
-    //        Поле.Представление=(string)Значение;
+    //    for (int i = 0; i != Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ; i++) {
+    //      РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[i];
+    //      object V8РџРѕР»Рµ = Get(Р’С‹Р±РѕСЂРєР°, "РџРѕР»СѓС‡РёС‚СЊ()", i);
+    //      object Р—РЅР°С‡РµРЅРёРµ = ConvertValueV8ToNet(V8РџРѕР»Рµ, con, РџРѕР»Рµ.РўРёРї);
+    //      ReleaseComObject(V8РџРѕР»Рµ);  //СЌС‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµ ComObject
+    //      if (РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚) {
+    //        РџРѕР»Рµ.РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ=(string)Р—РЅР°С‡РµРЅРёРµ;
     //      } else {
-    //        Поле.Значение = Значение;
-    //        Результат[j, k++] = Значение;
+    //        РџРѕР»Рµ.Р—РЅР°С‡РµРЅРёРµ = Р—РЅР°С‡РµРЅРёРµ;
+    //        Р РµР·СѓР»СЊС‚Р°С‚[j, k++] = Р—РЅР°С‡РµРЅРёРµ;
     //      }
     //    }
 
-    //    for (int i = 0; i < КолвоПредст; i++) {
-    //      ИнфОПоле Поле = ПоляЗапроса[ИндексыПредставлений[i]];
-    //      object Предст = Поле.Представление;
-    //      object Ссылка = ПоляЗапроса[Поле.ИндексСсылки].Значение;
-    //      if (Ссылка != null) {
-    //        Поле.PtyInfo = Ссылка.GetType().GetProperty("Представление");
-    //        if (Поле.PtyInfo != null) {
-    //          Поле.PtyInfo.SetValue(Ссылка, Предст, null);
+    //    for (int i = 0; i < РљРѕР»РІРѕРџСЂРµРґСЃС‚; i++) {
+    //      РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[РРЅРґРµРєСЃС‹РџСЂРµРґСЃС‚Р°РІР»РµРЅРёР№[i]];
+    //      object РџСЂРµРґСЃС‚ = РџРѕР»Рµ.РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ;
+    //      object РЎСЃС‹Р»РєР° = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[РџРѕР»Рµ.РРЅРґРµРєСЃРЎСЃС‹Р»РєРё].Р—РЅР°С‡РµРЅРёРµ;
+    //      if (РЎСЃС‹Р»РєР° != null) {
+    //        РџРѕР»Рµ.PtyInfo = РЎСЃС‹Р»РєР°.GetType().GetProperty("РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ");
+    //        if (РџРѕР»Рµ.PtyInfo != null) {
+    //          РџРѕР»Рµ.PtyInfo.SetValue(РЎСЃС‹Р»РєР°, РџСЂРµРґСЃС‚, null);
     //        }
     //      }
     //    }
     //    j++;
     //  }
-    //  ReleaseComObject(Выборка);
+    //  ReleaseComObject(Р’С‹Р±РѕСЂРєР°);
     //  pool.ReturnDBConnection(con); 
-    //  return Результат;	  
+    //  return Р РµР·СѓР»СЊС‚Р°С‚;	  
     //}
 
-    #region "Andrew's ВыполнитьЗапрос"
+    #region "Andrew's Р’С‹РїРѕР»РЅРёС‚СЊР—Р°РїСЂРѕСЃ"
     //****************************************************************************************************************
     //****************************************************************************************************************
-    //public static object[,] ВыполнитьЗапрос(string аТекстЗапроса, ПарамЗапроса[] аПараметры,
-    //  Type[] ТипыКолонок, string[] ИменаКолонок) {
+    //public static object[,] Р’С‹РїРѕР»РЅРёС‚СЊР—Р°РїСЂРѕСЃ(string Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, РџР°СЂР°РјР—Р°РїСЂРѕСЃР°[] Р°РџР°СЂР°РјРµС‚СЂС‹,
+    //  Type[] РўРёРїС‹РљРѕР»РѕРЅРѕРє, string[] РРјРµРЅР°РљРѕР»РѕРЅРѕРє) {
 
     //  DbConnections pool = DbConnections.Instance;
     //  DbConnection con = pool.ConnectV8();
-    //  object ComObjQueryResult = ПолучитьРезультатЗапроса(con, аТекстЗапроса, аПараметры);
+    //  object ComObjQueryResult = РџРѕР»СѓС‡РёС‚СЊР РµР·СѓР»СЊС‚Р°С‚Р—Р°РїСЂРѕСЃР°(con, Р°РўРµРєСЃС‚Р—Р°РїСЂРѕСЃР°, Р°РџР°СЂР°РјРµС‚СЂС‹);
 
-    //  object ComObjКолонки = Get(ComObjQueryResult, "Колонки");
-    //  int ЧислоКолВЗапросе = (int)Get(ComObjКолонки, "Количество()");
-    //  if (ТипыКолонок.Length != ИменаКолонок.Length) {
-    //    throw new ArgumentException(@"ИменаКолонок и ТипыКолонок не совпадают");
+    //  object ComObjРљРѕР»РѕРЅРєРё = Get(ComObjQueryResult, "РљРѕР»РѕРЅРєРё");
+    //  int Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ = (int)Get(ComObjРљРѕР»РѕРЅРєРё, "РљРѕР»РёС‡РµСЃС‚РІРѕ()");
+    //  if (РўРёРїС‹РљРѕР»РѕРЅРѕРє.Length != РРјРµРЅР°РљРѕР»РѕРЅРѕРє.Length) {
+    //    throw new ArgumentException(@"РРјРµРЅР°РљРѕР»РѕРЅРѕРє Рё РўРёРїС‹РљРѕР»РѕРЅРѕРє РЅРµ СЃРѕРІРїР°РґР°СЋС‚");
     //  }
 
-    //  List<ИнфОПоле> ПоляЗапроса = new List<ИнфОПоле>(ЧислоКолВЗапросе);
+    //  List<РРЅС„РћРџРѕР»Рµ> РџРѕР»СЏР—Р°РїСЂРѕСЃР° = new List<РРЅС„РћРџРѕР»Рµ>(Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ);
 
-    //  Dictionary<string, ИнфОПоле> ИмяПоляСсылкиЗапроса = new Dictionary<string, ИнфОПоле>();
-    //  List<ИнфОПоле> ПредставленияЗапроса = new List<ИнфОПоле>();
+    //  Dictionary<string, РРЅС„РћРџРѕР»Рµ> РРјСЏРџРѕР»СЏРЎСЃС‹Р»РєРёР—Р°РїСЂРѕСЃР° = new Dictionary<string, РРЅС„РћРџРѕР»Рµ>();
+    //  List<РРЅС„РћРџРѕР»Рµ> РџСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏР—Р°РїСЂРѕСЃР° = new List<РРЅС„РћРџРѕР»Рµ>();
 
     //  int index = 0;
-    //  while (index < ЧислоКолВЗапросе) {
-    //    object ComObjКолонка = Get(ComObjКолонки, "Получить()", index);
-    //    string ИмяКолон = (string)Get(ComObjКолонка, "Имя");
-    //    ReleaseComObject(ComObjКолонка);
+    //  while (index < Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ) {
+    //    object ComObjРљРѕР»РѕРЅРєР° = Get(ComObjРљРѕР»РѕРЅРєРё, "РџРѕР»СѓС‡РёС‚СЊ()", index);
+    //    string РРјСЏРљРѕР»РѕРЅ = (string)Get(ComObjРљРѕР»РѕРЅРєР°, "РРјСЏ");
+    //    ReleaseComObject(ComObjРљРѕР»РѕРЅРєР°);
 
-    //    ИнфОПоле Поле = new ИнфОПоле();
-    //    Поле.ЭтоПредст = ИмяКолон.EndsWith(констПредставление);
-    //    if (!Поле.ЭтоПредст) {
-    //      int ссылПолеИндекс = ПоляЗапроса.Count - ПредставленияЗапроса.Count;
-    //      if (ИмяКолон != ИменаКолонок[ссылПолеИндекс]) {
-    //        throw new ArgumentException(@"Должно идти property """ + ИмяКолон + @""", а не """ + ИменаКолонок[ссылПолеИндекс] + @"""");
+    //    РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = new РРЅС„РћРџРѕР»Рµ();
+    //    РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚ = РРјСЏРљРѕР»РѕРЅ.EndsWith(РєРѕРЅСЃС‚РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ);
+    //    if (!РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚) {
+    //      int СЃСЃС‹Р»РџРѕР»РµРРЅРґРµРєСЃ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°.Count - РџСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏР—Р°РїСЂРѕСЃР°.Count;
+    //      if (РРјСЏРљРѕР»РѕРЅ != РРјРµРЅР°РљРѕР»РѕРЅРѕРє[СЃСЃС‹Р»РџРѕР»РµРРЅРґРµРєСЃ]) {
+    //        throw new ArgumentException(@"Р”РѕР»Р¶РЅРѕ РёРґС‚Рё property """ + РРјСЏРљРѕР»РѕРЅ + @""", Р° РЅРµ """ + РРјРµРЅР°РљРѕР»РѕРЅРѕРє[СЃСЃС‹Р»РџРѕР»РµРРЅРґРµРєСЃ] + @"""");
     //      }
-    //      Поле.Тип = ТипыКолонок[ссылПолеИндекс];
-    //      ИмяПоляСсылкиЗапроса.Add(ИмяКолон, Поле);
+    //      РџРѕР»Рµ.РўРёРї = РўРёРїС‹РљРѕР»РѕРЅРѕРє[СЃСЃС‹Р»РџРѕР»РµРРЅРґРµРєСЃ];
+    //      РРјСЏРџРѕР»СЏРЎСЃС‹Р»РєРёР—Р°РїСЂРѕСЃР°.Add(РРјСЏРљРѕР»РѕРЅ, РџРѕР»Рµ);
     //    }
     //    else {
-    //      Поле.ИмяСсылки = ИмяКолон.Substring(0, ИмяКолон.Length - констПредставление.Length);
-    //      ПредставленияЗапроса.Add(Поле);
+    //      РџРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё = РРјСЏРљРѕР»РѕРЅ.Substring(0, РРјСЏРљРѕР»РѕРЅ.Length - РєРѕРЅСЃС‚РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ.Length);
+    //      РџСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏР—Р°РїСЂРѕСЃР°.Add(РџРѕР»Рµ);
     //    }
-    //    ПоляЗапроса.Add(Поле);
+    //    РџРѕР»СЏР—Р°РїСЂРѕСЃР°.Add(РџРѕР»Рµ);
     //    index++;
     //  }
-    //  ReleaseComObject(ComObjКолонки);
+    //  ReleaseComObject(ComObjРљРѕР»РѕРЅРєРё);
 
-    //  foreach (ИнфОПоле поле in ПредставленияЗапроса) {
-    //    ИнфОПоле полеСсылки = null;
-    //    if (ИмяПоляСсылкиЗапроса.TryGetValue(поле.ИмяСсылки, out полеСсылки)) {
-    //      поле.ПолеСсылки = полеСсылки;
+    //  foreach (РРЅС„РћРџРѕР»Рµ РїРѕР»Рµ in РџСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏР—Р°РїСЂРѕСЃР°) {
+    //    РРЅС„РћРџРѕР»Рµ РїРѕР»РµРЎСЃС‹Р»РєРё = null;
+    //    if (РРјСЏРџРѕР»СЏРЎСЃС‹Р»РєРёР—Р°РїСЂРѕСЃР°.TryGetValue(РїРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё, out РїРѕР»РµРЎСЃС‹Р»РєРё)) {
+    //      РїРѕР»Рµ.РџРѕР»РµРЎСЃС‹Р»РєРё = РїРѕР»РµРЎСЃС‹Р»РєРё;
     //    }
     //    else {
-    //      throw new ArgumentException("В запросе нет поля типа ссылка с именем " + поле.ИмяСсылки);
+    //      throw new ArgumentException("Р’ Р·Р°РїСЂРѕСЃРµ РЅРµС‚ РїРѕР»СЏ С‚РёРїР° СЃСЃС‹Р»РєР° СЃ РёРјРµРЅРµРј " + РїРѕР»Рµ.РРјСЏРЎСЃС‹Р»РєРё);
     //    }
     //  }
 
-    //  object Выборка = Get(ComObjQueryResult, "Выбрать()");
+    //  object Р’С‹Р±РѕСЂРєР° = Get(ComObjQueryResult, "Р’С‹Р±СЂР°С‚СЊ()");
     //  ReleaseComObject(ComObjQueryResult);
-    //  int Количество = (int)Get(Выборка, "Количество()");
-    //  object[,] Результат = new object[Количество, ТипыКолонок.Length];
+    //  int РљРѕР»РёС‡РµСЃС‚РІРѕ = (int)Get(Р’С‹Р±РѕСЂРєР°, "РљРѕР»РёС‡РµСЃС‚РІРѕ()");
+    //  object[,] Р РµР·СѓР»СЊС‚Р°С‚ = new object[РљРѕР»РёС‡РµСЃС‚РІРѕ, РўРёРїС‹РљРѕР»РѕРЅРѕРє.Length];
     //  int rowIndex = 0;
-    //  while ((bool)Get(Выборка, "Следующий()")) {
+    //  while ((bool)Get(Р’С‹Р±РѕСЂРєР°, "РЎР»РµРґСѓСЋС‰РёР№()")) {
     //    int colIndex = 0;
-    //    for (int i = 0; i != ЧислоКолВЗапросе; i++) {
-    //      ИнфОПоле Поле = ПоляЗапроса[i];
-    //      object V8Поле = Get(Выборка, "Получить()", i);
-    //      object Значение = ConvertValueV8ToNet(V8Поле, con, Поле.Тип);
-    //      ReleaseComObject(V8Поле);  //это может быть не ComObject
-    //      Поле.Значение = Значение;
-    //      if (!Поле.ЭтоПредст) {
-    //        Результат[rowIndex, colIndex++] = Значение;
+    //    for (int i = 0; i != Р§РёСЃР»РѕРљРѕР»Р’Р—Р°РїСЂРѕСЃРµ; i++) {
+    //      РРЅС„РћРџРѕР»Рµ РџРѕР»Рµ = РџРѕР»СЏР—Р°РїСЂРѕСЃР°[i];
+    //      object V8РџРѕР»Рµ = Get(Р’С‹Р±РѕСЂРєР°, "РџРѕР»СѓС‡РёС‚СЊ()", i);
+    //      object Р—РЅР°С‡РµРЅРёРµ = ConvertValueV8ToNet(V8РџРѕР»Рµ, con, РџРѕР»Рµ.РўРёРї);
+    //      ReleaseComObject(V8РџРѕР»Рµ);  //СЌС‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ РЅРµ ComObject
+    //      РџРѕР»Рµ.Р—РЅР°С‡РµРЅРёРµ = Р—РЅР°С‡РµРЅРёРµ;
+    //      if (!РџРѕР»Рµ.Р­С‚РѕРџСЂРµРґСЃС‚) {
+    //        Р РµР·СѓР»СЊС‚Р°С‚[rowIndex, colIndex++] = Р—РЅР°С‡РµРЅРёРµ;
     //      }
     //    }
 
-    //    foreach (ИнфОПоле полеПредст in ПредставленияЗапроса) {
-    //      object предст = полеПредст.Значение;
-    //      object ссылка = полеПредст.ПолеСсылки.Значение;
-    //      if (ссылка != null) {
-    //        PropertyInfo свойство = ссылка.GetType().GetProperty("Представление");
-    //        if (свойство != null) {
-    //          свойство.SetValue(ссылка, предст, null);
-    //          полеПредст.ПолеСсылки.PtyInfo = свойство;
+    //    foreach (РРЅС„РћРџРѕР»Рµ РїРѕР»РµРџСЂРµРґСЃС‚ in РџСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏР—Р°РїСЂРѕСЃР°) {
+    //      object РїСЂРµРґСЃС‚ = РїРѕР»РµРџСЂРµРґСЃС‚.Р—РЅР°С‡РµРЅРёРµ;
+    //      object СЃСЃС‹Р»РєР° = РїРѕР»РµРџСЂРµРґСЃС‚.РџРѕР»РµРЎСЃС‹Р»РєРё.Р—РЅР°С‡РµРЅРёРµ;
+    //      if (СЃСЃС‹Р»РєР° != null) {
+    //        PropertyInfo СЃРІРѕР№СЃС‚РІРѕ = СЃСЃС‹Р»РєР°.GetType().GetProperty("РџСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ");
+    //        if (СЃРІРѕР№СЃС‚РІРѕ != null) {
+    //          СЃРІРѕР№СЃС‚РІРѕ.SetValue(СЃСЃС‹Р»РєР°, РїСЂРµРґСЃС‚, null);
+    //          РїРѕР»РµРџСЂРµРґСЃС‚.РџРѕР»РµРЎСЃС‹Р»РєРё.PtyInfo = СЃРІРѕР№СЃС‚РІРѕ;
     //        }
     //      }
     //    }
     //    rowIndex++;
     //  }
-    //  ReleaseComObject(Выборка);
+    //  ReleaseComObject(Р’С‹Р±РѕСЂРєР°);
     //  pool.ReturnDBConnection(con);
-    //  return Результат;
+    //  return Р РµР·СѓР»СЊС‚Р°С‚;
     //}
     //****************************************************************************************************************
     //****************************************************************************************************************
